@@ -1,0 +1,98 @@
+@charset "utf-8";
+/* CSS Document */
+body,td,th {
+	font-size: 14px;
+}
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	font-family: "微软雅黑", Verdana, Geneva, sans-serif;
+	color: #999999;
+}
+.layout {
+	width: 1420px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 0px;
+	margin-left: auto;
+}
+
+
+.top1 {
+	height: 500px;
+	width: 1420px;
+}
+.top2 {
+	height: 300px;
+	width: 1420px;
+}
+.left {
+	width: 870px;
+	float: left;
+	padding-left: 20px;
+}
+.right {
+	width: 470px;
+	float: right;
+	padding-left: 40px;
+	padding-right: 20px;
+	padding-top: 20px;
+}
+.title {
+	font-size: 30px;
+	font-weight: bold;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	color: #C60;
+}
+
+.contont {
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 35px;
+}
+.contont2 {
+	font-size: 15px;
+	font-weight: bold;
+	line-height: 30px;
+}
+
+
+.red {
+	color: #F00;
+}
+.k {
+	height: 20px;
+}
+
+.14 {
+	font-size: 12px;
+	font-weight: normal;
+}
+.title2 {
+	font-size: 24px;
+	font-weight: bold;
+}
+.foot {
+	clear: both;
+	float: left;
+	width: 1420px;
+	position: fixed;
+	z-index: 99;
+	bottom: 0px;
+	height: 130px;
+	background-color: #C5BAAB;
+}
+#dg {
+	clear: both;
+	height: 130px;
+}
+
+img {
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}
