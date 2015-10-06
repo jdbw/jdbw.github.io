@@ -1,0 +1,183 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+<title>
+拉上好友抢现金</title>
+<meta name="keywords" content="" />
+<meta name="description" content="">
+<script type=text/javascript src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<link rel="stylesheet" href="http://d.cf919.com/jiedaibao.com/jdb/q.css">
+</head>
+<body class="mhome">
+<script type="text/javascript">  
+	/*-------------------------------------------*/
+	var InterValObj; 
+	var count = 60; 
+	var curCount;
+	function sendMessage() {
+		curCount = count;
+		var phone = $("#phone").val();
+		var checkCode=$("#checkCode").val();
+		var geetest_challenge=$(".geetest_challenge").val();
+		var geetest_validate=$(".geetest_validate").val();
+		var geetest_seccode=$(".geetest_seccode").val();
+		if (phone != "") {
+			if (!phone.match(/^(((1[3|4|5|7|8][0-9]{1}))+\d{8})$/)) {
+				errShow("手机号不正确", 1);
+			} else if(phone.match(/^(((1[3|4|5|7|8][0-9]{1}))+\d{8})$/)){
+						
+		   $.getJSON("./send.php?ac=one&mobile="+phone,function(data){
+				if(data.status==0){
+			$("#btnSendCode").removeAttr("onclick");
+			$("#btnSendCode").html(curCount + "秒后重试");
+			InterValObj = window.setInterval(SetRemainTime, 1000); 
+			errShow("验证码发送成功！", 1000);
+			}else{
+					errShow(data.message, 1);
+				}
+				});
+			}
+		} else {
+			errShow("手机号不能为空！", 1);
+		}
+	}
+	//timer处理函数  
+	function SetRemainTime() {
+		if (curCount == 0) {
+			window.clearInterval(InterValObj);
+			$("#btnSendCode").attr("onclick","sendMessage();");
+			//$("#btnSendCode").removeAttr("disabled");
+			$("#btnSendCode").html("重新发送");
+			code = "";    
+		} else {
+			curCount--;
+			$("#btnSendCode").html(curCount + "秒后重试");
+			//$("#btnSendCode").val(curCount + "秒后重新获取");
+		}
+	}
+    function send(){
+		var phone = $("#phone").val();
+		var SMSCode=$("#SMSCode").val();
+		if(phone==''){
+			errShow("手机号不能为空！", 1);
+		}else if(SMSCode==''){
+			errShow("短信验证码不能为空！", 1);
+		}else{
+		
+			$.getJSON("./send.php?ac=two&mobile="+phone+"&code="+SMSCode,function(data){
+				if(data.status==0){
+				//errShow("恭喜您抢到50元现金！", 1);
+				$(".infoForm").addClass("ng-hide");
+				$("#getCashStatus").removeClass("ng-hide");
+				$("#xiazai").removeClass("ng-hide");
+				}else if(data.status==4){
+					$(".infoForm").addClass("ng-hide");
+					$("#getCashStatus").removeClass("ng-hide");
+					$("#xiazai").removeClass("ng-hide");
+				}else{
+					errShow(data.message, 1);
+				}
+			});
+		}
+    }
+    </script>
+<style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-block-transitions{transition:0s all!important;-webkit-transition:0s all!important;}.ng-hide-add-active,.ng-hide-remove{display:block!important;}/* 弹出浮层 */
+.pop {
+position: fixed;
+  left: 50%;
+  top: 40%;
+  width: 70%;
+  box-shadow: 0px 0px 10px #777;
+  -moz-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  -webkit-transform: translate(-50%,-50%);
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  color: #fff;
+  z-index: 1001;
+  letter-spacing: 1px;
+  font-size: 14px;
+  background: rgba(0,0,0,.8);
+  word-wrap: break-word;
+  word-break: break-all;
+}
+</style><div>
+<div id="content">
+<div>
+<div ng-view="" class="ng-scope">
+<div class="acceptInvitation ng-scope" ng-controller="AcceptinvitationCtrl"><div class="bg-1">
+<img src="http://d.cf919.com/jiedaibao.com/jdb/bg-01.png" class="bg-img">
+<div class="infoForm" ng-hide="getCashStatus">
+<div class="bottom">我在借贷宝领取到20元现金，你也快来领取吧！直接提现哦~</div>
+<form class="ng-pristine ng-valid"><div class="form-group">
+<input class="form-control ng-pristine ng-valid" placeholder="请输入你的手机号" type="tel" id="phone"></div>
+<div class="input-group"><input class="form-control ng-pristine ng-valid" placeholder="请输入验证码" type="tel" id="SMSCode" name="SMSCode">
+<div class="input-group-addon ng-binding" id="btnSendCode" onclick="sendMessage()">获取验证码</div></div></form>
+<div class="top"><img src="http://d.cf919.com/jiedaibao.com/jdb/15901_60.png"></div></div>
+<div class="getCashS ng-hide" id="getCashStatus"><img src="http://d.cf919.com/jiedaibao.com/jdb/25yuan.png">
+<div class="shadow"><p>恭喜您领到20元现金,注册借贷宝直接提现！</p><p>注册时请不要修改邀请码，否则没有现金哦！</p></div>
+</div>
+<a class="inviteFriend2" href="javascript:send();"><img src="http://d.cf919.com/jiedaibao.com/jdb/btn_cash.png" class="btnCash"></a>
+<a class="inviteFriend2 ng-hide" id='xiazai' href="http://jdb.bjsuda.com/xiazai.html" ng-show="getCashStatus">
+<img src="http://d.cf919.com/jiedaibao.com/jdb/btn_download.png" class="btnCash"></a></div><div class="bg-2"><img src="http://d.cf919.com/jiedaibao.com/jdb/city.png" class="city">
+<div class="group-3 ng-scope"><h5>注意事项</h5>
+<p>1.
+活动奖励以现金的形式充值到借贷宝账户，用户绑定银行卡后可提现；</p>
+<p>
+2.
+活动奖励到达个人借贷宝账号会有短暂延迟，具体以实际情况为准；</p>
+<p>
+3.
+已成功接受邀请并注册借贷宝的用户，在活动结束的一个月内完成绑卡仍可完成奖励提现。
+</p></div><div class="group-3 no-margin ng-scope"><h5>活动规则</h5><p>1. 活动开始时间：2015年8月8日 8时8分8秒；</p>
+<p>2. 登录借贷宝客户端，分享你的邀请链接邀请新用户，新用户接受邀请可获50元现金；新用户成功绑定银行卡，你可获20元邀请奖励；你邀请的每一名用户，再邀请其他一名新用户，你可再获10元现金；</p>
+<p>3. 邀请新用户越多，获得奖励越多；</p>
+<p>邀请10名新用户，每人再邀请10人，你可获超过1千元奖励；</p>
+<p>邀请100名新用户，每人再邀请10人，你可获超过1万元奖励；</p>
+<p>邀请100名新用户，每人再邀请100人，你可获超过10万元奖励；</p>
+<p>邀请500位新用户，每人再邀请200人，你可获得超过100万元奖励；</p>
+<p>4. 活动中遇到任何问题请拨打客服电话：400-100-6699；</p>
+</div></div></div></div></div></div></div></div>
+<!--<li style="color:#dc9101;font-size:12px;text-align: right;padding-top:5px;">隶属于会理县东盛农牧科技有限责任公司</li>-->
+<div class="pop pop1" style="display: none;">
+<p class="error"><br />
+</p>
+</div>
+<div id="autoLoginHeight"></div>
+<script type="text/javascript">
+	//提示窗口
+	function errShow(content){
+		$('.error').html(content);
+		$('.pop1').show();
+		setTimeout("errHide()",3000);
+	}
+	
+	//隐藏错误提示
+	function errHide(){
+		$('.pop1').hide();
+		$('.error').text('');
+		$("#error").html('');
+		;
+	}
+	
+	//登陆提示
+	function loginShow(content){
+		$('.error').html(content);
+		$('.pop1').show();
+	}
+	
+	//点击关闭错误提示
+	$('.pop1').live('click',function(){
+		errHide();
+	})
+</script>
+</body>
+</html>
+<div style="display:none">
+<script language="javascript" type="text/javascript" src="http://js.users.51.la/18635086.js"></script>
+<noscript><a href="http://www.51.la/?18635086" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="http://img.users.51.la/18635086.asp" style="border:none" /></a></noscript>
+</div>
